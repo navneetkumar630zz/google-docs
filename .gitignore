@@ -11,6 +11,9 @@
 /.next/
 /out/
 
+# config
+/firebase-config.js
+
 # production
 /build
 

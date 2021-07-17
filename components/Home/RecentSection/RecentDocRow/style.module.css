@@ -1,0 +1,22 @@
+.Row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 6rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+}
+.Row:hover {
+  background-color: var(--grey-4);
+}
+
+@media only screen and (max-width: 576px) {
+  .Row {
+    margin-right: 0;
+    margin-bottom: 3px;
+    padding: 0.7rem 0;
+  }
+}
