@@ -2,15 +2,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: 6rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  margin-right: 2rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: background-color 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  transition: background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.deleteIcon {
+  margin-left: 1rem !important;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .Row:hover {
   background-color: var(--grey-4);
+}
+:is(.Row:hover, .Row:focus-within) .deleteIcon {
+  opacity: 1;
 }
 
 @media only screen and (max-width: 576px) {
@@ -18,5 +26,8 @@
     margin-right: 0;
     margin-bottom: 3px;
     padding: 0.7rem 0;
+  }
+  .deleteIcon {
+    display: none !important;
   }
 }

@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import firebase from 'firebase';
 import Image from 'next/image';
 import {
   Button,
+  ButtonBase,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,20 +20,27 @@ import style from './style.module.css';
 const CreateNewSection = ({ user }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const closeModal = () => {
     setIsModalVisible(false);
   };
 
-  const createDocument = () => {
+  const createDocument = async () => {
     if (!inputValue) return;
-    db.collection('userDocs').doc(user.email).collection('docs').add({
-      name: inputValue,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
 
-    setInputValue('');
-    setIsModalVisible(false);
+    setLoading(true);
+    const snapshot = await db
+      .collection('userDocs')
+      .doc(user.email)
+      .collection('docs')
+      .add({
+        name: inputValue,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    setLoading(false);
+    router.push(`/doc/${snapshot.id}`);
   };
 
   const CreateNewModal = (
@@ -43,11 +53,17 @@ const CreateNewSection = ({ user }) => {
           placeholder="e.g. My article"
           onKeyPress={e => e.key === 'Enter' && createDocument()}
           fullWidth
+          autoFocus
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeModal}>Cancel</Button>
-        <Button variant="contained" color="primary" onClick={createDocument}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={createDocument}
+          startIcon={loading && <CircularProgress color="white" size="12px" />}
+        >
           Create
         </Button>
       </DialogActions>
@@ -64,15 +80,17 @@ const CreateNewSection = ({ user }) => {
           </IconButton>
         </header>
         <div className={style.template_container}>
-          <div className="template" onClick={() => setIsModalVisible(true)}>
-            <Image
-              src="/create_new.png"
-              height="181"
-              width="140"
-              objectFit="contain"
-              alt="blank template"
-              className={style.image}
-            />
+          <div>
+            <ButtonBase focusRipple onClick={() => setIsModalVisible(true)}>
+              <Image
+                src="/create_new.png"
+                height="181"
+                width="140"
+                objectFit="contain"
+                alt="blank template"
+                className={style.image}
+              />
+            </ButtonBase>
             <h6>Blank</h6>
           </div>
         </div>

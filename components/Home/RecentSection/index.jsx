@@ -1,11 +1,11 @@
 import { IconButton } from '@material-ui/core';
 import { Folder, SortByAlpha } from '@material-ui/icons';
-import { useCollectionOnce } from 'react-firebase-hooks/firestore';
+import { useCollection } from 'react-firebase-hooks/firestore';
 import db from 'database';
 import RecentDocRow from './RecentDocRow';
 
 const RecentSection = ({ user }) => {
-  const [session] = useCollectionOnce(
+  const [snapshot] = useCollection(
     db
       .collection('userDocs')
       .doc(user.email)
@@ -31,8 +31,13 @@ const RecentSection = ({ user }) => {
           </div>
         </header>
         <div>
-          {session?.docs.map(doc => (
-            <RecentDocRow key={doc.id} id={doc.id} data={doc.data()} />
+          {snapshot?.docs.map(doc => (
+            <RecentDocRow
+              key={doc.id}
+              id={doc.id}
+              data={doc.data()}
+              userEmail={user.email}
+            />
           ))}
         </div>
       </div>
