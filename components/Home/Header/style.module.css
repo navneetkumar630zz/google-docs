@@ -1,15 +1,15 @@
 .Header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--white);
-  padding: 0.6rem;
-  gap: 2rem;
-}
-
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--white);
+    padding: 0.6rem;
+    gap: 2rem;
+  }
+  
 .branding {
   display: flex;
   align-items: center;
@@ -29,6 +29,7 @@
   background-color: var(--grey-4);
   border-radius: var(--border-radius-lg);
 }
+
 .search input {
   width: 100%;
   margin-left: 1rem;;
@@ -36,6 +37,7 @@
   border: none;
   outline: none;
 }
+
 .search:focus-within {
   background-color: var(--white);
   box-shadow: var(--shadow-1);

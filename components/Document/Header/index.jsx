@@ -1,10 +1,15 @@
 import Link from 'next/link';
-import { Avatar, Button, IconButton, Tooltip } from '@material-ui/core';
-import { ArrowBack, Description, MessageOutlined, Share } from '@material-ui/icons';
+import Image from 'next/image';
+import { Avatar, Button, IconButton, Tooltip } from '@mui/material';
+import { ArrowBack, MessageOutlined, Share } from '@mui/icons-material';
+import { signOutAndRedirect } from '@/firebase/utils';
 import style from './style.module.css';
-import { signOut } from 'next-auth/client';
 
 const Header = ({ user, docName }) => {
+  const handleSignOut = () => {
+    signOutAndRedirect()
+  };
+
   return (
     <header className={style.Header}>
       <div className="flex">
@@ -13,7 +18,7 @@ const Header = ({ user, docName }) => {
           <ArrowBack />
         </IconButton></Link>
         <div className="mr-2 hide-on-mobile">
-          <img src="/logo.png" alt="docs logo" width="40" height="40" />
+          <Image src="/logo.png" alt="docs logo" width={40} height={40} />
         </div>
         <div className={style.center}>
           <h4>{docName}</h4>
@@ -41,7 +46,7 @@ const Header = ({ user, docName }) => {
           </Button>
         </div>
         <Tooltip title="Log out">
-          <IconButton size="small" onClick={signOut}>
+          <IconButton size="small" onClick={handleSignOut}>
             <Avatar src={user.image} alt="user avatar" />
           </IconButton>
         </Tooltip>

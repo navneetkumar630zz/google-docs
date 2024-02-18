@@ -1,44 +1,47 @@
-import db from 'database';
-import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { useDocumentOnce } from 'react-firebase-hooks/firestore';
-import style from './style.module.css';
+import { useEffect, useState, useMemo } from "react";
+import dynamic from "next/dynamic";
+import { doc, setDoc } from "firebase/firestore";
+import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
+import { db } from "@/firebase";
+import style from "./style.module.css";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const Editor = dynamic(
-  () => import('react-draft-wysiwyg').then(modules => modules.Editor),
+  () => import("react-draft-wysiwyg").then((modules) => modules.Editor),
   { ssr: false }
 );
 
-const TextEditor = ({ user, docId }) => {
+const TextEditor = ({ user, docId, docData }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-  const docRef = db
-    .collection('userDocs')
-    .doc(user.email)
-    .collection('docs')
-    .doc(docId);
+  const docRef = useMemo(
+    () => doc(db, `userDocs/${user.email}/docs/${docId}`),
+    [user.email, docId]
+  );
 
-  const [snapshot] = useDocumentOnce(docRef);
+  const handleEditorStateChange = (updatedEditorState) => {
+    const oldStateRaw = convertToRaw(editorState.getCurrentContent());
+    const newStateRaw = convertToRaw(updatedEditorState.getCurrentContent());
 
-  const handleEditorStateChange = editorState => {
-    setEditorState(editorState);
+    setEditorState(updatedEditorState);
 
-    docRef.set(
-      {
-        editorState: convertToRaw(editorState.getCurrentContent()),
-      },
-      { merge: true }
-    );
+    if (JSON.stringify(oldStateRaw) !== JSON.stringify(newStateRaw)) {
+      setDoc(
+        docRef,
+        {
+          editorState: newStateRaw,
+        },
+        { merge: true }
+      );
+    }
   };
 
   useEffect(() => {
-    const content = snapshot?.data()?.editorState;
+    const content = docData?.editorState;
     if (content) {
       setEditorState(EditorState.createWithContent(convertFromRaw(content)));
     }
-  }, [snapshot]);
+  }, [docData]);
 
   return (
     <div className={style.TextEditor}>

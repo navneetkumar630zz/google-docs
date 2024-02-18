@@ -1,9 +1,15 @@
-import { Avatar, IconButton, Tooltip } from '@material-ui/core';
-import { Apps, Menu, Search } from '@material-ui/icons';
-import { signOut } from 'next-auth/client';
-import style from './style.module.css';
+import Image from "next/image";
+import { Avatar, IconButton, Tooltip } from "@mui/material";
+import { Apps, Menu, Search } from "@mui/icons-material";
+import { signOutAndRedirect } from "@/firebase/utils";
+import style from "./style.module.css";
 
 const Header = ({ user }) => {
+  console.log(user.email);
+  const handleSignOut = () => {
+    signOutAndRedirect()
+  };
+
   return (
     <header className={style.Header}>
       <div className="flex">
@@ -11,7 +17,7 @@ const Header = ({ user }) => {
           <Menu />
         </IconButton>
         <div className={style.branding}>
-          <img src="/logo.png" alt="docs logo" width="40" height="40" />
+          <Image src="/logo.png" alt="docs logo" width={40} height={40} />
           Docs
         </div>
       </div>
@@ -28,8 +34,8 @@ const Header = ({ user }) => {
           </IconButton>
         </div>
         <Tooltip title="Log out">
-          <IconButton size="small" onClick={signOut}>
-            <Avatar src={user.image} alt="user avatar" />
+          <IconButton size="small" onClick={handleSignOut}>
+            <Avatar>{user.email.substr(0, 1).toUpperCase()}</Avatar>
           </IconButton>
         </Tooltip>
       </div>

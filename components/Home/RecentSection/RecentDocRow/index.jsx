@@ -1,8 +1,9 @@
-import { useRouter } from 'next/router';
-import { IconButton } from '@material-ui/core';
-import { Delete, Description } from '@material-ui/icons';
-import db from 'database';
-import style from './style.module.css';
+import { useRouter } from "next/router";
+import { deleteDoc, doc } from "firebase/firestore";
+import { IconButton } from "@mui/material";
+import { Delete, Description } from "@mui/icons-material";
+import { db } from "@/firebase";
+import style from "./style.module.css";
 
 const RecentDocRow = ({ id, data, userEmail }) => {
   const router = useRouter();
@@ -11,13 +12,9 @@ const RecentDocRow = ({ id, data, userEmail }) => {
     router.push(`/doc/${id}`);
   };
 
-  const handleDelete = e => {
+  const handleDelete = (e) => {
     e.stopPropagation();
-    db.collection('userDocs')
-      .doc(userEmail)
-      .collection('docs')
-      .doc(id)
-      .delete();
+    deleteDoc(doc(db, `userDocs/${userEmail}/docs/${id}`));
   };
 
   return (
@@ -25,7 +22,7 @@ const RecentDocRow = ({ id, data, userEmail }) => {
       className={style.Row}
       onClick={handleClick}
       tabIndex="0"
-      onKeyPress={e => e.key === 'Enter' && handleClick()}
+      onKeyDown={(e) => e.key === "Enter" && handleClick()}
     >
       <div className="flex">
         <Description color="primary" className="mr-2 hide-on-mobile" />
@@ -38,7 +35,7 @@ const RecentDocRow = ({ id, data, userEmail }) => {
         <IconButton
           className={style.deleteIcon}
           onClick={handleDelete}
-          onKeyPress={e => e.key === 'Enter' && handleDelete(e)}
+          onKeyPress={(e) => e.key === "Enter" && handleDelete(e)}
         >
           <Delete />
         </IconButton>

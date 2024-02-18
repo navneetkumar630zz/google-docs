@@ -9,20 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.1",
-    "@material-ui/icons": "^4.11.2",
-    "@next-auth/firebase-adapter": "^0.1.2",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.15.10",
     "draft-js": "^0.11.7",
-    "firebase": "^8.7.1",
-    "next": "11.0.1",
-    "next-auth": "^3.27.3",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-draft-wysiwyg": "^1.14.7",
-    "react-firebase-hooks": "^3.0.4"
+    "firebase": "^10.8.0",
+    "next": "14.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-draft-wysiwyg": "^1.15.0",
+    "react-firebase-hooks": "^5.1.1"
   },
   "devDependencies": {
-    "eslint": "7.30.0",
-    "eslint-config-next": "11.0.1"
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0"
   }
 }

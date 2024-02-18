@@ -1,17 +1,14 @@
 # Google Docs
 A google docs clone made with:
 - [Next JS](https://nextjs.org)
-- [nextAuth](https://next-auth.js.org)
-- firebase
+- Firebase: auth
+- Firebase: firestore
 - [Draft JS](https://draftjs.org) | [react-draft-wysiwyg](https://www.npmjs.com/package/react-draft-wysiwyg)
 - [Material UI](https://material-ui.com)
 
 ## Getting Started
 - Create a file named `.env.local` in the root directory.
 - Add these variables there
-  - GOOGLE_CLIENT_ID
-  - GOOGLE_CLIENT_SECRET
-  - NEXTAUTH_URL
   - NEXT_PUBLIC_FIREBASE__API_KEY
   - NEXT_PUBLIC_FIREBASE__AUTH_DOMAIN
   - NEXT_PUBLIC_FIREBASE__PROJECT_ID
@@ -27,4 +24,4 @@ yarn install
 ```bash
 yarn dev
 ```
-- The server will on [http://localhost:3000](http://localhost:3000)
+- The server should be running on [http://localhost:3000](http://localhost:3000)

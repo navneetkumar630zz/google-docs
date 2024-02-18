@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import firebase from 'firebase';
-import Image from 'next/image';
+import { useState } from "react";
+import { useRouter } from "next/router";
+// import firebase from 'firebase';
+import Image from "next/image";
 import {
   Button,
   ButtonBase,
@@ -12,14 +12,15 @@ import {
   DialogTitle,
   IconButton,
   Input,
-} from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
-import db from 'database';
-import style from './style.module.css';
+} from "@mui/material";
+import { MoreVert } from "@mui/icons-material";
+import { Timestamp, addDoc, collection } from "firebase/firestore";
+import { db } from "@/firebase";
+import style from "./style.module.css";
 
 const CreateNewSection = ({ user }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -31,16 +32,12 @@ const CreateNewSection = ({ user }) => {
     if (!inputValue) return;
 
     setLoading(true);
-    const snapshot = await db
-      .collection('userDocs')
-      .doc(user.email)
-      .collection('docs')
-      .add({
-        name: inputValue,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+    const docRef = await addDoc(collection(db, `userDocs/${user.email}/docs`), {
+      name: inputValue,
+      timestamp: Timestamp.now(),
+    });
     setLoading(false);
-    router.push(`/doc/${snapshot.id}`);
+    router.push(`/doc/${docRef.id}`);
   };
 
   const CreateNewModal = (
@@ -49,9 +46,9 @@ const CreateNewSection = ({ user }) => {
       <DialogContent>
         <Input
           value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="e.g. My article"
-          onKeyPress={e => e.key === 'Enter' && createDocument()}
+          onKeyDown={(e) => e.key === "Enter" && createDocument()}
           fullWidth
           autoFocus
         />
@@ -62,9 +59,10 @@ const CreateNewSection = ({ user }) => {
           variant="contained"
           color="primary"
           onClick={createDocument}
-          startIcon={loading && <CircularProgress color="white" size="12px" />}
+          disabled={loading}
+          startIcon={loading && <CircularProgress color="inherit" size={16} />}
         >
-          Create
+          {loading ? "Creating" : "Create"}
         </Button>
       </DialogActions>
     </Dialog>

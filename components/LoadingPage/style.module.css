@@ -1,0 +1,10 @@
+.page_wrapper {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.content {
+    display: grid;
+    justify-items: center;
+}

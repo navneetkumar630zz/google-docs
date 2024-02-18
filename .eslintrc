@@ -1,8 +1,0 @@
-{
-  "extends": ["next", "next/core-web-vitals"],
-  "rules": {
-    "@next/next/link-passhref": "off",
-    "react-hooks/rules-of-hooks": "off",
-    "@next/next/no-img-element": "off"
-  }
-}

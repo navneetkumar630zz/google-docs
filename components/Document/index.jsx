@@ -1,28 +1,26 @@
-import { useDocumentOnce } from 'react-firebase-hooks/firestore';
-import db from 'database';
-import Login from 'components/Login';
-import Header from './Header';
-import { useRouter } from 'next/dist/client/router';
-import TextEditor from './TextEditor';
+import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
+import { doc } from "firebase/firestore";
+import { useRouter } from "next/router";
+import { db } from "@/firebase";
+import Header from "./Header";
+import TextEditor from "./TextEditor";
 
-const Document = ({ session }) => {
-  if (!session) return <Login />;
-
+const Document = ({ user }) => {
   const router = useRouter();
   const { id } = router.query;
-  const [snapshot, loadingSnapshot] = useDocumentOnce(
-    db.collection('userDocs').doc(session.user.email).collection('docs').doc(id)
+  const [docData, loadingDocData] = useDocumentDataOnce(
+    doc(db, `userDocs/${user.email}/docs/${id}`)
   );
 
-  if (!loadingSnapshot && !snapshot?.data()?.name) {
-    router.replace('/');
+  if (!loadingDocData && !docData?.name) {
+    router.replace("/");
     return null;
   }
 
   return (
     <div>
-      <Header user={session.user} docName={snapshot?.data()?.name} />
-      <TextEditor user={session.user} docId={id} />
+      <Header user={user} docName={docData?.name} />
+      <TextEditor user={user} docId={id} docData={docData} />
     </div>
   );
 };

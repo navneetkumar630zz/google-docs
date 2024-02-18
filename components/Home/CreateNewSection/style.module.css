@@ -1,15 +1,15 @@
 .CreateNewSection {
-  background-color: var(--grey-4);
-}
-
-.template_container {
-  display: flex;
-}
-
-.image {
-  border: 1px solid var(--grey-3) !important;
-  border-radius: var(--border-radius-sm);
-}
-.image:hover {
-  border-color: var(--primary) !important;
-}
+    background-color: var(--grey-4);
+  }
+  
+  .template_container {
+    display: flex;
+  }
+  
+  .image {
+    border: 1px solid var(--grey-3) !important;
+    border-radius: var(--border-radius-sm);
+  }
+  .image:hover {
+    border-color: var(--primary) !important;
+  }
